@@ -20,14 +20,14 @@ namespace Farmers_Market_API.Repositories
             if (produce.PricePerKg < 0) { throw new InvalidProduceFormatException("Price per kg cannot be negative."); }
             if (produce.QuantityKg < 0) { throw new InvalidProduceFormatException("Quantity per kg cannot be negative."); }
             _db.ProduceListings.Add(produce);
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         public async Task<List<ProduceListing>> GetAllAsync() { return await _db.ProduceListings.ToListAsync(); }
 
         public async Task<ProduceListing?> GetByIdAsync(int id)
         {
-           var produce = await _db.ProduceListings.FirstAsync((p) => p.ListingId == id, CancellationToken.None);
+           var produce = await _db.ProduceListings.FirstAsync((p) => p.Id == id, CancellationToken.None);
            return produce ?? throw new ListingNotFoundException($"Produce listing with ID {id} not found.");
         }
 
@@ -44,14 +44,16 @@ namespace Farmers_Market_API.Repositories
 
         public async Task UpdateAsync(ProduceListing updatedProduce)
         {
-            var foundProduce = await _db.ProduceListings.FindAsync(updatedProduce.ListingId) ?? throw new ListingNotFoundException($"Produce listing with ID {updatedProduce.ListingId} not found.");
+            var foundProduce = await _db.ProduceListings.FindAsync(updatedProduce.Id) ?? throw new ListingNotFoundException($"Produce listing with ID {updatedProduce.Id} not found.");
             _db.ProduceListings.Update(updatedProduce);
+            await _db.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(ProduceListing produceToDelete)
         {
-            var foundProduce = await _db.ProduceListings.FindAsync(produceToDelete.ListingId) ?? throw new ListingNotFoundException($"Produce listing with ID {produceToDelete.ListingId} not found.");
+            var foundProduce = await _db.ProduceListings.FindAsync(produceToDelete.Id) ?? throw new ListingNotFoundException($"Produce listing with ID {produceToDelete.Id} not found.");
            _db.ProduceListings.Remove(produceToDelete);
+           await _db.SaveChangesAsync();
         }
     }
 }

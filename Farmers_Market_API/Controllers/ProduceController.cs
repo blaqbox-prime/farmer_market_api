@@ -11,21 +11,21 @@ namespace Farmers_Market_API.Controllers
     [Route("api/[controller]")]
     public class ProduceController(ProduceRepository produceRepository) : ControllerBase
     {
-        private ProduceRepository _produceRepository;
+        private readonly ProduceRepository _produceRepository = produceRepository;
         
 
         [HttpGet]
-        public IActionResult GetProduceListings()
+        public async Task<IActionResult> GetProduceListings()
         {
-            return Ok(_produceRepository.getAll());
+            return Ok(await _produceRepository.GetAllAsync());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetProduceListingById(int id)
+        public async Task<IActionResult> GetProduceListingById(int id)
         { 
             try 
             { 
-                var produce = _produceRepository.GetById(id);
+                var produce = await _produceRepository.GetByIdAsync(id);
                 return Ok(produce);
             } 
             
@@ -41,9 +41,9 @@ namespace Farmers_Market_API.Controllers
         }
 
         [HttpGet("{id}/summary")]
-        public IActionResult GetProduceListingSummary(int id)
+        public async Task<IActionResult> GetProduceListingSummary(int id)
         {
-            var produce = _produceRepository.GetById(id);
+            var produce = await _produceRepository.GetByIdAsync(id);
             if(produce == null)
             {
                 return NotFound();
@@ -54,24 +54,13 @@ namespace Farmers_Market_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateProduceListing([FromBody] CreateProduceDTO newListing)
+        public async Task<IActionResult> CreateProduceListing([FromBody] CreateProduceDTO newListing)
         {
             try
             {
-                var createdProduce = _produceRepository.AddProduce(
-                    new ProduceListing
-                    {
-                        FarmerId = newListing.FarmerId,
-                        ProduceName = newListing.ProduceName,
-                        Category = newListing.Category,
-                        PricePerKg = newListing.PricePerKg,
-                        QuantityKg = newListing.QuantityKg,
-                        IsAvailable = newListing.IsAvailable,
-                        HarvestDate = newListing.HarvestDate,
-                        DateListed = newListing.DateListed,
-                        Description = newListing.Description
-                    });
-                return Created("api/produce/" + createdProduce.ListingId, createdProduce);
+                await _produceRepository.AddAsync(new ProduceListing(newListing));
+
+                return Created();
             }
             catch (InvalidProduceFormatException ex) 
             {

@@ -4,7 +4,6 @@ namespace Farmers_Market_API.DTOs
 {
     public struct CreateProduceDTO
     {
-        public int FarmerId { get; set; }
         public string ProduceName { get; set; }
         public Category Category { get; set; }
         public double PricePerKg { get; set; }
@@ -17,7 +16,6 @@ namespace Farmers_Market_API.DTOs
 
         public CreateProduceDTO(int farmerId, string produceName, Category category, double pricePerKg, double quantityKg, bool isAvailable, DateTime harvestDate, DateTime dateListed, string? description)
         {
-            FarmerId = farmerId;
             ProduceName = produceName;
             Category = category;
             PricePerKg = pricePerKg;

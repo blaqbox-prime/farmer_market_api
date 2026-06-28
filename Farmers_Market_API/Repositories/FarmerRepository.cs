@@ -36,7 +36,7 @@ namespace Farmers_Market_API.Repositories
 
         public async Task UpdateAsync(Farmer updatedFarmer)
         {
-            var found = await  _db.Farmers.FindAsync(updatedFarmer.FarmerId) ?? throw new FarmerNotFoundException(updatedFarmer.FarmerId);
+            var found = await  _db.Farmers.FindAsync(updatedFarmer.Id) ?? throw new FarmerNotFoundException(updatedFarmer.Id);
            _db.Farmers.Update(updatedFarmer);
            await _db.SaveChangesAsync();
         }
@@ -50,7 +50,7 @@ namespace Farmers_Market_API.Repositories
 
         public async Task DeleteAsync(Farmer farmerToDelete)
         {
-            var found = await _db.Farmers.FindAsync(farmerToDelete.FarmerId) ?? throw new FarmerNotFoundException(farmerToDelete.FarmerId);
+            var found = await _db.Farmers.FindAsync(farmerToDelete.Id) ?? throw new FarmerNotFoundException(farmerToDelete.Id);
             _db.Farmers.Remove(found);
             await _db.SaveChangesAsync();
             

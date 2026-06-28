@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Farmers_Market_API.DTOs;
 using Farmers_Market_API.Enums;
 
 namespace Farmers_Market_API.Models
 {
     public class ProduceListing
     {
-        public int ListingId { get; set; }
+        public int Id { get; set; }
         public int FarmerId { get; set; }
         public string ProduceName { get; set; } = string.Empty;
         public Category Category { get; set; } = Category.Other;
@@ -23,7 +21,7 @@ namespace Farmers_Market_API.Models
         
         public ProduceListing(int listingId, int farmerId, string produceName, Category category, double pricePerKg, double quantityKg, bool isAvailable, DateTime harvestDate, DateTime dateListed, string? description)
         {
-            ListingId = listingId;
+            Id = listingId;
             FarmerId = farmerId;
             ProduceName = produceName;
             Category = category;
@@ -35,6 +33,18 @@ namespace Farmers_Market_API.Models
             Description = description;
         }
     
+        public ProduceListing(CreateProduceDTO dto)
+        {
+            ProduceName = dto.ProduceName;
+            Category = dto.Category;
+            PricePerKg = dto.PricePerKg;
+            QuantityKg = dto.QuantityKg;
+            IsAvailable = dto.IsAvailable;
+            HarvestDate = dto.HarvestDate;
+            DateListed = dto.DateListed;
+            Description = dto.Description;
+        }
+
         public string GetFormattedSummary()
         {
             return $"""

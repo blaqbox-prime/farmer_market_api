@@ -21,7 +21,7 @@ namespace Farmers_Market_API.Models
         {
             Id = id;
             BuyerId = buyerId;
-            ListingId = product.ListingId;
+            ListingId = product.Id;
             QuantityOrdered = quantityOrdered;
             TotalPrice = _calculateTotalPrice(quantityOrdered, product.PricePerKg);
             Status = status;

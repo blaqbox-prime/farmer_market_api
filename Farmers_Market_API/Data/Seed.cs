@@ -5,7 +5,7 @@ namespace Farmers_Market_API.Data;
 public class Seed
 {
     // Farmer Seed
-    private readonly List<Farmer> FarmersSeed = new List<Farmer> {
+    private static readonly List<Farmer> FarmersSeed = new List<Farmer> {
             new Farmer(1, "Kobus", "kobus@example.com", "123-456-7890", "Location A", "Province A", 4.5, true, "Farm A"),
             new Farmer(2, "Tyrique", "tyrique@example.com", "098-765-4321", "Location B", "Province B", 4.0, true, "Farm B"),
             new Farmer(3, "Zandre", "zandre@example.com", "555-555-5555", "Location C", "Province C", 4.8, true, "Farm C"),
@@ -29,7 +29,7 @@ public class Seed
             };
 
     // Produce Seed
-    private readonly List<ProduceListing> ProduceListingsSeed = new()
+    private static readonly List<ProduceListing> ProduceListingsSeed = new()
         {
             new ProduceListing(1, 1, "Tomatoes", Category.Vegetables, 2.5, 100, false, DateTime.Now.AddDays(-10), DateTime.Now.AddDays(-5), "Freshly harvested tomatoes."),
             new ProduceListing(2, 2, "Apples", Category.Fruit, 3.0, 50, true, DateTime.Now.AddDays(-15), DateTime.Now.AddDays(-7), "Crisp and sweet apples."),
