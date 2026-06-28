@@ -6,6 +6,7 @@ namespace Farmers_Market_API.Models
     {
         public int Id { get; set; }
         public int BuyerId { get; set; }
+        public int FarmerId { get; set; }
         public int ListingId { get; set; }
         public double QuantityOrdered { get; set; }
         public double TotalPrice { get; set; }
@@ -14,13 +15,14 @@ namespace Farmers_Market_API.Models
         public DateTime? CollectionDate { get; set; }
         public string? Notes { get; set; } = string.Empty;
 
-        private ProduceListing _product;
+        private ProduceListing? _product;
 
         public Order() { }
-        public Order(int id, int buyerId, ProduceListing product, double quantityOrdered, OrderStatus status, DateTime? collectionDate = null, string? notes = null)
+        public Order(int id, int buyerId, int farmerId, ProduceListing product, double quantityOrdered, OrderStatus status, DateTime? collectionDate = null, string? notes = null)
         {
             Id = id;
             BuyerId = buyerId;
+            FarmerId = farmerId;
             ListingId = product.Id;
             QuantityOrdered = quantityOrdered;
             TotalPrice = _calculateTotalPrice(quantityOrdered, product.PricePerKg);

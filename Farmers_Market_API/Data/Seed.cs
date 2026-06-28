@@ -1,5 +1,6 @@
 using Farmers_Market_API.Models;
 using Farmers_Market_API.Enums;
+using Microsoft.EntityFrameworkCore;
 namespace Farmers_Market_API.Data;
 
 public class Seed
@@ -27,6 +28,21 @@ public class Seed
             new Farmer(19, "Palesa", "palesa@example.com", "181-818-1818", "Location S", "Province S", 4.0, true, "Farm S"),
             new Farmer(20, "Quentin", "quentin@example.com", "191-919-1919", "Location T", "Province T", 3.9, false, "Farm T")
             };
+
+    // Buyer Seed
+    private static readonly List<Buyer> BuyersSeed = new()
+    {
+        new Buyer(1, "Anele Mokoena", "anele@example.com", "071-000-0001", BuyerType.Individual, "Cape Town"),
+        new Buyer(2, "Lerato Ndlovu", "lerato@example.com", "071-000-0002", BuyerType.Business, "Johannesburg"),
+        new Buyer(3, "Thabo Nkosi", "thabo@example.com", "071-000-0003", BuyerType.Restaurant, "Durban"),
+        new Buyer(4, "Nandi Dlamini", "nandi@example.com", "071-000-0004", BuyerType.School, "Pretoria"),
+        new Buyer(5, "Sipho Mabaso", "sipho@example.com", "071-000-0005", BuyerType.Individual, "Bloemfontein"),
+        new Buyer(6, "Maya van Rensburg", "maya@example.com", "071-000-0006", BuyerType.Business, "Stellenbosch"),
+        new Buyer(7, "Kuhle Khumalo", "kuhle@example.com", "071-000-0007", BuyerType.Other, "Gqeberha"),
+        new Buyer(8, "Zama Patel", "zama@example.com", "071-000-0008", BuyerType.Restaurant, "Polokwane"),
+        new Buyer(9, "Johan Botha", "johan@example.com", "071-000-0009", BuyerType.Individual, "Welkom"),
+        new Buyer(10, "Sonto Molefe", "sonto@example.com", "071-000-0010", BuyerType.Business, "Mbombela")
+    };
 
     // Produce Seed
     private static readonly List<ProduceListing> ProduceListingsSeed = new()
@@ -86,4 +102,36 @@ public class Seed
             new ProduceListing(49, 1, "Lentils (Bulk)", Category.Grain, 1.6, 220, true, DateTime.Now.AddDays(-90), DateTime.Now.AddDays(-45), "Dry lentils for cooking."),
             new ProduceListing(50, 2, "Tofu (Fresh)", Category.Other, 4.5, 30, true, DateTime.Now.AddDays(-3), DateTime.Now.AddDays(-1), "Freshly made soybean tofu.")
         };
+
+    private static readonly List<Order> OrdersSeed = new()
+    {
+        new Order(1, 1, 1, ProduceListingsSeed[0], 5, OrderStatus.Pending, notes: "Pickup in the morning"),
+        new Order(2, 2, 2, ProduceListingsSeed[1], 3, OrderStatus.Confirmed, notes: "Please pack separately"),
+        new Order(3, 3, 3, ProduceListingsSeed[2], 8, OrderStatus.Pending),
+        new Order(4, 4, 1, ProduceListingsSeed[3], 2, OrderStatus.Collected, collectionDate: DateTime.Now.AddDays(-1)),
+        new Order(5, 5, 2, ProduceListingsSeed[4], 4, OrderStatus.Cancelled, notes: "Customer cancelled"),
+        new Order(6, 6, 3, ProduceListingsSeed[5], 6, OrderStatus.Pending, notes: "Deliver before noon"),
+        new Order(7, 7, 1, ProduceListingsSeed[6], 2, OrderStatus.Confirmed, notes: "Gift packaging requested"),
+        new Order(8, 8, 2, ProduceListingsSeed[7], 5, OrderStatus.Pending),
+        new Order(9, 9, 3, ProduceListingsSeed[8], 10, OrderStatus.Collected, collectionDate: DateTime.Now.AddDays(-2)),
+        new Order(10, 10, 1, ProduceListingsSeed[9], 3, OrderStatus.Confirmed, notes: "Leave at the front desk"),
+        new Order(11, 1, 2, ProduceListingsSeed[10], 4, OrderStatus.Pending),
+        new Order(12, 2, 3, ProduceListingsSeed[11], 2, OrderStatus.Confirmed, notes: "Extra careful handling"),
+        new Order(13, 3, 1, ProduceListingsSeed[12], 7, OrderStatus.Pending),
+        new Order(14, 4, 2, ProduceListingsSeed[13], 6, OrderStatus.Collected, collectionDate: DateTime.Now.AddDays(-3)),
+        new Order(15, 5, 3, ProduceListingsSeed[14], 9, OrderStatus.Cancelled, notes: "Order cancelled by buyer"),
+        new Order(16, 6, 1, ProduceListingsSeed[15], 3, OrderStatus.Pending),
+        new Order(17, 7, 2, ProduceListingsSeed[16], 5, OrderStatus.Confirmed),
+        new Order(18, 8, 3, ProduceListingsSeed[17], 4, OrderStatus.Pending, notes: "Urgent pickup"),
+        new Order(19, 9, 1, ProduceListingsSeed[18], 8, OrderStatus.Confirmed),
+        new Order(20, 10, 2, ProduceListingsSeed[19], 2, OrderStatus.Pending, notes: "Morning delivery")
+    };
+
+    public static void SeedData(ModelBuilder modelBuilder)
+    {
+       modelBuilder.Entity<Farmer>().HasData(FarmersSeed);
+       modelBuilder.Entity<Buyer>().HasData(BuyersSeed);
+       modelBuilder.Entity<ProduceListing>().HasData(ProduceListingsSeed);
+       modelBuilder.Entity<Order>().HasData(OrdersSeed);
+    }
 }
