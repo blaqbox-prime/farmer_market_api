@@ -38,5 +38,7 @@ public class AppDbContext(DbContextOptions options): DbContext(options)
             .WithMany()
             .HasForeignKey(o => o.ListingId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        Seed.SeedData(modelBuilder);
     }
 }

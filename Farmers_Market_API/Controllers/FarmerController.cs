@@ -11,30 +11,30 @@ namespace Farmers_Market_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FarmerController : ControllerBase
+    public class FarmerController(FarmerRepository farmerRepository) : ControllerBase
     {
-        private FarmerRepository _repository = new FarmerRepository();
+        private FarmerRepository _repository = farmerRepository;
 
         [HttpGet]
-        public IActionResult GetListOfFarmers()
+        public async Task<IActionResult> GetListOfFarmers()
         {
-            return Ok(_repository.GetAll());
+            return Ok(await  _repository.GetAllAsync());
         }
 
         [HttpPost]
-        public IActionResult CreateFarmer([FromBody] Farmer farmer)
+        public async Task<IActionResult> CreateFarmer([FromBody] Farmer farmer)
         {
 
-                var createdFarmer = _repository.Create(farmer);
-                return Created($"api/farmer/{createdFarmer.FarmerId}", createdFarmer);
+                await _repository.AddAsync(farmer);
+                return Created();
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromQuery] int farmerId)
+        public async Task<IActionResult> Delete([FromQuery] int farmerId)
         {
             try 
             {
-                var deletedFarmer = _repository.Delete(farmerId);
+                await _repository.DeleteAsync(farmerId);
                 return NoContent();
             }
             catch(FarmerNotFoundException ex)
@@ -44,12 +44,12 @@ namespace Farmers_Market_API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateFarmers([FromBody] Farmer updatedFarmer)
+        public async Task<IActionResult> UpdateFarmers([FromBody] Farmer updatedFarmer)
         {
             try 
             {
-                var updatedFarmerResult = _repository.UpdateFarmer(updatedFarmer);
-                return Ok(updatedFarmerResult);
+                await _repository.UpdateAsync(updatedFarmer);
+                return Ok();
             }
             catch (FarmerNotFoundException ex) 
             { 

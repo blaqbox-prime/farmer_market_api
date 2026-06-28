@@ -1,4 +1,5 @@
 using Farmers_Market_API.Data;
+using Farmers_Market_API.Models;
 using Farmers_Market_API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>((options) =>
 builder.Services.AddScoped<FarmerRepository>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<ProduceRepository>();
+builder.Services.AddScoped<BuyerRepository>();
 
  
 
